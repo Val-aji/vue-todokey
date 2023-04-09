@@ -1,0 +1,12 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&family=Open+Sans:wght@300&family=Poppins&family=Roboto&display=swap');
+
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .coloInputUser {
+        @apply dark:bg-[#ccc] text-light dark:text-dark bg-[#111111]
+    }
+}

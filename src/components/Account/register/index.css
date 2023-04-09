@@ -1,0 +1,32 @@
+@tailwind components;
+
+@layer components {
+    .containerRegister {
+        @apply overflow-x-auto w-[60vw] relative z-10 rounded-tr-xl mx-auto my-[5vh]
+    }
+    .register {
+        @apply w-full p-4 border flex flex-col items-center dark:border-light border-dark
+    }
+    .register > .judulRegister {
+        @apply w-max mb-4 text-lg font-bold
+    }
+    .register > form {
+        @apply text-sm w-5/6 
+    } 
+    .register > form > .containerInput {
+        @apply w-full overflow-auto
+    }
+    .register > form > .containerInput > .judulInput {
+        @apply w-max
+    }
+    .register > form > .containerInput > input {
+        @apply mt-1 mb-4 bg-dark dark:bg-light text-slate-300 dark:text-black dark:font-bold px-3 py-1 text-sm w-full
+    }
+    .register > form > button {
+        @apply w-full rounded-full bg-green-500 py-1 text-[10px] preHp:text-base
+    }
+
+    .register > .tombolHapus > svg {
+        @apply bg-red-500 bg-inherit w-full h-[4vh]
+    }
+}

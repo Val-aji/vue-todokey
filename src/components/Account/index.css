@@ -1,0 +1,40 @@
+@tailwind components;
+
+@layer components {
+    .containerAccount {
+        @apply w-full flex  justify-between 
+    }
+
+    .inputActive {
+        @apply dark:bg-light bg-dark text-light dark:text-dark mb-2 rounded-sm
+    }
+
+    .Account {
+        @apply w-full sm:w-[60%]  flex items-center justify-between pr-4 mt-1  mb-0 sm:w-3/6 sm:border-l border-green-500 
+    }
+    .Account >  img {
+        @apply  w-[30%] preTablet:w-[25vw] rounded-tl-3xl rounded-br-3xl h-[20vh]  my-4 mx-4 lg:h-[30vh] xl:h-[50vh]
+    }
+
+    .Account > .identitas {
+        @apply  py-10 preTablet:w-3/6 text-[13px]  preHp:text-sm w-max overflow-x-auto pr-[3vw]  w-full 
+    }
+    .Account > .identitas > .namaProfile {
+       @apply text-[14px] preHp:text-lg text-center w-full mx-auto  
+    }
+    
+    
+    .Account > .identitas > .tombol > .login > .tombolLogin {
+        @apply w-full border dark:border-light rounded-xl text-sm  py-1 hover:border-none outline-none 
+    }
+
+    .Account > .identitas > .tombol > .noLogin {
+       @apply w-full flex flex-col justify-between items-center mt-2 
+    }
+
+    .Account > .identitas > .tombol > .noLogin > button {
+        @apply w-full text-center rounded-full mt-1 py-1 dark:font-bold tracking-wider mb-2 text-[9px] preHp:text-sm
+    }
+
+
+}

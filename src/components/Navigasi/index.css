@@ -1,0 +1,27 @@
+@tailwind components;
+
+@layer components {
+    .judulNav {
+        @apply text-blue-900 dark:text-blue-400 text-lg 
+    }
+    
+    .navigasi  {    
+        @apply flex justify-between px-4 fixed bg-light w-full border-b border-dark dark:bg-dark dark:border-light items-center pb-3 py-2 h-10vh text-dark dark:text-light z-20  
+        
+    }
+    .navigasi > div {
+        @apply flex sm:w-2/5 w-full justify-between  items-center 
+    }
+
+    
+    .activeNav {
+        @apply bg-dark dark:bg-light text-light dark:text-dark rounded-lg  !important
+    }
+    .navigasi > .footerNav {
+        @apply hidden sm:flex
+    }
+    
+    .navigasi > .footerNav > .childNav {
+        @apply py-1 px-3 text-dark dark:text-light 
+    }       
+}
