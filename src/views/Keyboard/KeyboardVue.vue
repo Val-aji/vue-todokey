@@ -9,14 +9,14 @@
     import CardKeyboard from './CardKeyboard.vue';
 
     const storeKeybard = useStoreKeyboard()
-    const {setStatus, generateKata, handleInput, setIsActive, setCounter} = storeKeybard
+    const {setStatus, generateKata, handleInput, setIsActive, setCounter, setDataHistori} = storeKeybard
     const {navbarHP, posisi, listKata, hasilTes, isActive} = storeToRefs(storeKeybard)
     
     onBeforeMount(() => {
         generateKata()
     })
 
-    const timer = 60
+    const timer = 3
     const waktu = ref(timer);
     const hasil = ref(null)
     const manipulationDone = ref(true)
@@ -33,6 +33,7 @@
         if(newValue <= 0) {
             clearInterval(batasWaktu)
             hasil.value = hasilTes
+            setDataHistori(hasilTes.value)
             setIsActive(false)
             generateKata()
             waktu.value = timer
@@ -53,8 +54,9 @@
         <AccountVue class="pt-[10vh]" :posisi="posisi">
             <InputKeyboard class="my-[8vh]"/>    
         </AccountVue>
-        <NavbarHP @setStatus="setStatus" :listNavbar="navbarHP" :posisi="posisi">
-            <div class="cardKeyboard w-full preTablet:w-[80%] preTablet:ml-[15vw] mt-[5vh] relative ">
+        <NavbarHP @setStatus="setStatus" :listNavbar="navbarHP" :posisi="false">
+            <div v-if="posisi == 'home'">
+                <div class="cardKeyboard w-full preTablet:w-[80%] preTablet:ml-[15vw] mt-[5vh] relative ">
                 <p class="absolute right-[2vw] top-[-5vh] text-lg">{{waktu.toString().length <= 1 ? '0'+waktu : waktu}}</p>
                 <div class="containerCard w-full flex flex-wrap p-0 justify-center preHp:justify-start preHp:ml-[2vw]"  
                 >
@@ -66,13 +68,16 @@
                         {{ kata.text }}
                     </p>
                 </div>
+                </div>
+                <InputKeyboard 
+                v-if="manipulationDone && posisi == 'home'"
+                class="my-[4vh]" 
+                @handleInput="handleInput" @setIsActive="setIsActive" 
+                />
             </div>
-            <InputKeyboard 
-            v-if="manipulationDone"
-            class="my-[4vh]" 
-            @handleInput="handleInput" @setIsActive="setIsActive" 
-            />
-            
+            <div v-if="posisi == 'history'" class="w-full flex justify-center my-[5vh]">
+                History Tidak ada!
+            </div>
         </NavbarHP>
 
         <CardKeyboard v-if="hasil && !isActive" :hasil="hasil" />

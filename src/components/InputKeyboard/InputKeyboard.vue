@@ -5,6 +5,7 @@
     const inputUser = ref("")
     
     function handleInput() {
+        inputUser.value = inputUser.value.toLowerCase()
         const {value} = inputUser
         emit('setIsActive', true)
         if(value.match(/\s+/)) {

@@ -40,10 +40,8 @@
             </div>
         </div>
 
-        
         <!-- diisi  parent -->
-        <slot v-if="!posisi"></slot>
-        
+        <slot v-if="!posisi"></slot>        
     </div>
     
 

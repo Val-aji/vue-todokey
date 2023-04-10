@@ -12,13 +12,15 @@ export const useStoreKeyboard = defineStore("storeKeyboard", {
         listKata: [],
         posisiIndex: 0,
         kataBenar: 0,
-        kataSalah: 0
+        kataSalah: 0,
+        dataHistori: []
     }),
     getters: {
         hasilTes(state) {
             const {kataBenar, kataSalah} = state
             const jumlah = kataBenar + kataSalah
-            const akurasi = (kataBenar / (jumlah * 0.1) * 10).toString().substring(0, 4) + "%"
+
+            const akurasi = jumlah === 0 ? 0 : (kataBenar / (jumlah * 0.1) * 10).toString().substring(0, 4) + "%"
             
             const result = [
                 {judul: "Kata Permenit", value: jumlah},
@@ -31,14 +33,18 @@ export const useStoreKeyboard = defineStore("storeKeyboard", {
         },
         posisi(state) {
             const currentPosisi = state.navbarHP.filter(i => i.status)[0]
-            if(currentPosisi.name === "home") {
-                return false
-            } else {
-                return true
-            }
+            // if(currentPosisi.name === "home") {
+            //     return false
+            // } else {
+            //     return true
+            // }
+            return currentPosisi.name
         }
     },
     actions: {
+        setDataHistori(res) {
+            
+        },
         setCounter(res) {
             this.counter = res
         },
