@@ -3,7 +3,7 @@
     
     const emit = defineEmits(["handleInput", "setIsActive"])
     const inputUser = ref("")
-
+    
     function handleInput() {
         const {value} = inputUser
         emit('setIsActive', true)

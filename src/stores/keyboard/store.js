@@ -3,7 +3,7 @@ import { bankKata } from './listKata';
 
 export const useStoreKeyboard = defineStore("storeKeyboard", {
     state: () => ({
-
+        counter: 0,
         navbarHP: [
             {id: 0, name: "home", status: true},
             {id: 1, name: "history", status: false}
@@ -39,15 +39,24 @@ export const useStoreKeyboard = defineStore("storeKeyboard", {
         }
     },
     actions: {
+        setCounter(res) {
+            this.counter = res
+        },
         resetValue() {
-            this.posisiIndex = 0
-            this.kataBenar = 0
-            this.kataSalah = 0
+            this.counter = 0;
+            this.posisiIndex = 0;
+            this.kataBenar = 0;
+            this.kataSalah = 0;
         },
         setIsActive(res) {
             this.isActive = res
         },
         handleInput(res) {
+            if(this.counter === 0) {
+                this.resetValue()
+            }
+            this.counter++
+            
             const {listKata, posisiIndex} = this
             const kondisi = listKata[posisiIndex].text.trim() === res.trim()
             

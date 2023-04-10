@@ -9,39 +9,41 @@
     import CardKeyboard from './CardKeyboard.vue';
 
     const storeKeybard = useStoreKeyboard()
-    const {setStatus, generateKata, handleInput, setIsActive, resetValue} = storeKeybard
+    const {setStatus, generateKata, handleInput, setIsActive, setCounter} = storeKeybard
     const {navbarHP, posisi, listKata, hasilTes, isActive} = storeToRefs(storeKeybard)
     
     onBeforeMount(() => {
         generateKata()
     })
 
-    const waktu = ref(60);
+    const timer = 60
+    const waktu = ref(timer);
+    const hasil = ref(null)
+    const manipulationDone = ref(true)
     let batasWaktu;
     watch(isActive, (newValue) => {
         if(newValue) {
             batasWaktu = setInterval(() => {
             waktu.value--;
             }, 1000);
-        }
+        } 
     })
     
-    
-    const hasil = ref(null)
-    const manipulationDone = ref(true)
     watch(waktu, newValue => {
         if(newValue <= 0) {
             clearInterval(batasWaktu)
             hasil.value = hasilTes
             setIsActive(false)
             generateKata()
-            waktu.value = 60
+            waktu.value = timer
             manipulationDone.value = false
             setTimeout(() => {
                 manipulationDone.value = true
             }, 100)
-        }
+            setCounter(0)
+        } 
     })
+
 
 </script>
 
@@ -73,7 +75,7 @@
             
         </NavbarHP>
 
-        <CardKeyboard v-if="hasil" :posisi="posisi" :hasil="hasil" />
+        <CardKeyboard v-if="hasil && !isActive" :hasil="hasil" />
         
     </div>
 </template>
