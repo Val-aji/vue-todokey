@@ -9,14 +9,15 @@
     import CardKeyboard from './CardKeyboard.vue';
 
     const storeKeybard = useStoreKeyboard()
-    const {setStatus, generateKata, handleInput, setIsActive, setCounter, setDataHistori} = storeKeybard
-    const {navbarHP, posisi, listKata, hasilTes, isActive} = storeToRefs(storeKeybard)
+    const {setStatus, generateKata, handleInput, setIsActive, setCounter, setDataHistori, deleteData} = storeKeybard
+    const {navbarHP, posisi, listKata, hasilTes, isActive, dataHistori} = storeToRefs(storeKeybard)
     
+
     onBeforeMount(() => {
         generateKata()
     })
 
-    const timer = 60
+    const timer = 1
     const waktu = ref(timer);
     const hasil = ref(null)
     const manipulationDone = ref(true)
@@ -75,12 +76,19 @@
                 @handleInput="handleInput" @setIsActive="setIsActive" 
                 />
             </div>
-            <div v-if="posisi == 'history'" class="w-full flex justify-center my-[5vh]">
-                History Tidak ada!
+            <div v-if="posisi == 'history'" class="w-full flex flex-col my-[5vh]">
+                <p v-if="dataHistori.length == 0" class="mx-auto">History Tidak ada!</p>
+
+                <CardKeyboard 
+                    v-for="data in dataHistori"
+                    :hasil="data"
+                    class="my-[2vh]"
+                    @deleteData="deleteData"
+                />
             </div>
         </NavbarHP>
 
-        <CardKeyboard v-if="hasil && !isActive" :hasil="hasil" />
+        <CardKeyboard v-if="hasil && !isActive && posisi == 'home'" :hasil="hasil.value" />
         
     </div>
 </template>

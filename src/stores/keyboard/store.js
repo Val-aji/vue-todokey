@@ -13,22 +13,29 @@ export const useStoreKeyboard = defineStore("storeKeyboard", {
         posisiIndex: 0,
         kataBenar: 0,
         kataSalah: 0,
-        dataHistori: []
+        currentDataHistori: [],
+        idTerakhir: 0
     }),
     getters: {
+        dataHistori(state) {
+            return state.currentDataHistori.reverse()
+        },
         hasilTes(state) {
             const {kataBenar, kataSalah} = state
             const jumlah = kataBenar + kataSalah
 
             const akurasi = jumlah === 0 ? 0 : (kataBenar / (jumlah * 0.1) * 10).toString().substring(0, 4) + "%"
             
-            const result = [
-                {judul: "Kata Permenit", value: jumlah},
-                {judul: "Kata yang benar", value: kataBenar},
-                {judul: "Kata Salah", value: kataSalah},
-                {judul: "Akurasi", value: akurasi},
-            ]
-            
+            const result = {
+                id: this.idTerakhir + 1,
+                tanggal: new Date().toLocaleString("ID-id", {timeZone: "Asia/Jakarta"}),
+                data: [
+                    {judul: "Kata Permenit", value: jumlah},
+                    {judul: "Kata yang benar", value: kataBenar},
+                    {judul: "Kata Salah", value: kataSalah},
+                    {judul: "Akurasi", value: akurasi},
+                ]
+            }
             return result
         },
         posisi(state) {
@@ -42,8 +49,14 @@ export const useStoreKeyboard = defineStore("storeKeyboard", {
         }
     },
     actions: {
+        deleteData(id) {
+            const newData = this.dataHistori.filter(item => item.id != id)
+
+            this.currentDataHistori = newData
+        },
         setDataHistori(res) {
-            
+            this.idTerakhir++
+            this.currentDataHistori = [...this.dataHistori, res] 
         },
         setCounter(res) {
             this.counter = res
