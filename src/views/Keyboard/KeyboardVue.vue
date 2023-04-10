@@ -17,7 +17,7 @@
         generateKata()
     })
 
-    const timer = 1
+    const timer = 60
     const waktu = ref(timer);
     const hasil = ref(null)
     const manipulationDone = ref(true)
