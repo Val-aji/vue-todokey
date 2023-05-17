@@ -18,7 +18,11 @@
         await getDataKeyboard();        
     })
 
+<<<<<<< HEAD
     const timer = 1;
+=======
+    const timer = 60
+>>>>>>> 89d97b12329d223b5bc1d51a90754072e124858f
     const waktu = ref(timer);
     const hasil = ref(null)
     const manipulationDone = ref(true)
