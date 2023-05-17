@@ -1,5 +1,5 @@
 <script setup>
-    import { ref, defineProps, defineEmits } from 'vue';
+    import {  defineProps, defineEmits } from 'vue';
 
     const props = defineProps({
         hasil: {
@@ -8,11 +8,10 @@
 
         },
     })
-
+    
     const emit = defineEmits(["deleteData"])
 
     function handleDeleteData() {
-        console.log("tes")
         const kondisi = confirm("apakah anda ingin menghapus "+ props.hasil.tanggal + " ?")
         if(kondisi) {
             emit("deleteData", props.hasil.id)

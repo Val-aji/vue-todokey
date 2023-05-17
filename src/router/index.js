@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import TodoList from '../views/todolist/TodoList.vue'
-import DownloaderVue from "../views/downloader/DownloaderVue.vue"
 import KeyboardVue from "../views/Keyboard/KeyboardVue.vue"
 
 const router = createRouter({
@@ -10,11 +9,6 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: TodoList,
-    },
-    {
-      path: '/downloader',
-      name: 'downloader',
-      component: DownloaderVue,
     },
     {
       path: "/keyboard",

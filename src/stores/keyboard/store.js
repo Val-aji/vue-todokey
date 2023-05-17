@@ -1,5 +1,8 @@
 import { defineStore } from 'pinia';
 import { bankKata } from './listKata';
+import { useStoreAccount } from '../storeAccount';
+import { storeToRefs } from 'pinia';
+
 
 export const useStoreKeyboard = defineStore("storeKeyboard", {
     state: () => ({
@@ -27,6 +30,7 @@ export const useStoreKeyboard = defineStore("storeKeyboard", {
             const akurasi = jumlah === 0 ? 0 : (kataBenar / (jumlah * 0.1) * 10).toString().substring(0, 4) + "%"
             
             const result = {
+
                 id: this.idTerakhir + 1,
                 tanggal: new Date().toLocaleString("ID-id", {timeZone: "Asia/Jakarta"}),
                 data: [
@@ -49,14 +53,96 @@ export const useStoreKeyboard = defineStore("storeKeyboard", {
         }
     },
     actions: {
-        deleteData(id) {
+        async getDataKeyboard() {
+            const storeAccount = useStoreAccount()
+            const {getIsLogin, formData, instance} = storeToRefs(storeAccount);
+
+            await storeAccount.cekLogin()
+        
+            if(!getIsLogin.value) {
+                this.currentDataHistori = []
+                return false
+            }
+            
+            
+            try {
+                const result = await instance.value.post("/keyboard/getData", formData.value)
+                const {data} = result.data
+                const dataDB = data.map((res) => {
+                    const parsingData = JSON.parse(res.data)
+                    const obj = {
+                        id: res.id,
+                        tanggal: res.tanggal,
+                        data: parsingData
+                    }
+
+                    this.currentDataHistori.push(obj)
+                })
+                
+                
+                return true
+            } catch (error) {
+                console.log({error})
+                if(error.response.status === 401) return "error"
+                
+            }
+
+
+        },
+        async deleteData(id) {
+            if(!id || typeof id != "number") return false
+
+            const {isLogin, instance, formData, usernameStore} = storeToRefs(useStoreAccount())
+
             const newData = this.dataHistori.filter(item => item.id != id)
 
-            this.currentDataHistori = newData
+            if(isLogin.value) {
+                try {
+                    
+                    formData.value.append("id", id)
+                    const result = await instance .value.post("/keyboard/deleteData", formData.value)
+                    
+                    console.log({result})
+                    formData.value.delete("id")
+                } catch (error) {
+                    console.log({error})
+    
+                    return false
+                }    
+            }
+
+            this.currentDataHistori = [...newData]
         },
-        setDataHistori(res) {
+        async setDataHistori(res) {
+            
+            const {isLogin, instance, formData, usernameStore} = storeToRefs(useStoreAccount())
+            
             this.idTerakhir++
-            this.currentDataHistori = [...this.dataHistori, res] 
+            const obj = {
+                ...res,
+                username: isLogin.value ? usernameStore.value: "Guest"
+            }
+            
+            if(isLogin.value) {
+                formData.value.append("tanggal", res.tanggal)
+                formData.value.append("data", JSON.stringify(res.data))
+
+                if(!instance.value || !formData) return false
+
+                try {
+                    const result = await instance.value.post("keyboard/insert", formData.value)
+                    
+                    if(result.data.status == 201) {
+                        formData.value.set("tanggal", "")
+                        formData.value.set("data", "")
+                        console.log("tambah data berhasil")
+                    }    
+                } catch (error) {
+                    console.log({error})
+                }
+            }
+            this.currentDataHistori.push(obj)
+
         },
         setCounter(res) {
             this.counter = res

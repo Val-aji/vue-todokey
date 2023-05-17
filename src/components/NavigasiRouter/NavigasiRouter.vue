@@ -1,10 +1,11 @@
 <script setup>
-    import { ref } from 'vue';
+    import { ref, onBeforeMount } from 'vue';
     import { RouterLink } from 'vue-router';
+    import { useStoreAccount } from '../../stores/storeAccount';
 
+    const {cekLogin} = useStoreAccount()
     const listNavigasi = ref([
         {id: 0, name: "Todolist", status: true, route: "/"},
-        {id: 1, name: "Downloader", status: false, route: "/downloader"},
         {id: 2, name: "Keyboard", status: false, route: "/keyboard"},
     ])
 
@@ -17,6 +18,7 @@
             }
         })
     }
+
 </script>
 
 <template>

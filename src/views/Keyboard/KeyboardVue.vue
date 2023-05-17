@@ -7,17 +7,18 @@
     import NavbarHP from '../../components/NavbarHP/NavbarHP.vue';
     import {ref, onBeforeMount, watch} from "vue"
     import CardKeyboard from './CardKeyboard.vue';
-
+    
     const storeKeybard = useStoreKeyboard()
-    const {setStatus, generateKata, handleInput, setIsActive, setCounter, setDataHistori, deleteData} = storeKeybard
+    
+    const {setStatus, generateKata, handleInput, setIsActive, setCounter, setDataHistori, deleteData, getDataKeyboard} = storeKeybard
     const {navbarHP, posisi, listKata, hasilTes, isActive, dataHistori} = storeToRefs(storeKeybard)
     
-
-    onBeforeMount(() => {
+    onBeforeMount(async () => {
         generateKata()
+        await getDataKeyboard();        
     })
 
-    const timer = 1
+    const timer = 1;
     const waktu = ref(timer);
     const hasil = ref(null)
     const manipulationDone = ref(true)
@@ -50,14 +51,16 @@
 </script>
 
 <template>
-    <NavigasiVue :listNavigasi="navbarHP" @setStatus="setStatus"/>
+    <NavigasiVue :listNavigasi="navbarHP" @setStatus="setStatus" />
     <div id="Keyboard" class="dark:bg-dark dark:text-light bg-light text-dark h-[110vh] overflow-y-auto pb-[10vh]">
         <AccountVue class="pt-[10vh]" :posisi="posisi">
-            <InputKeyboard class="my-[8vh]"/>    
+            <CardKeyboard :hasil="hasilTes" class="mt-[5vh]" />
         </AccountVue>
         <NavbarHP @setStatus="setStatus" :listNavbar="navbarHP" :posisi="false">
-            <div v-if="posisi == 'home'">
-                <div class="cardKeyboard w-full preTablet:w-[80%] preTablet:ml-[15vw] mt-[5vh] relative ">
+        </NavbarHP>
+
+        <div v-if="posisi == 'home'">
+            <div class="cardKeyboard w-full preTablet:w-[80%] preTablet:ml-[15vw] mt-[5vh] relative ">
                 <p class="absolute right-[2vw] top-[-5vh] text-lg">{{waktu.toString().length <= 1 ? '0'+waktu : waktu}}</p>
                 <div class="containerCard w-full flex flex-wrap p-0 justify-center preHp:justify-start preHp:ml-[2vw]"  
                 >
@@ -69,24 +72,25 @@
                         {{ kata.text }}
                     </p>
                 </div>
-                </div>
-                <InputKeyboard 
-                v-if="manipulationDone && posisi == 'home'"
-                class="my-[4vh]" 
-                @handleInput="handleInput" @setIsActive="setIsActive" 
-                />
-            </div>
-            <div v-if="posisi == 'history'" class="w-full flex flex-col my-[5vh]">
-                <p v-if="dataHistori.length == 0" class="mx-auto">History Tidak ada!</p>
+            </div>    
+        </div>
 
+        
+        <div v-if="posisi == 'history'" class="w-full flex flex-col my-[5vh]">
+            <p v-if="dataHistori.length == 0" class="mx-auto">History Tidak ada!</p>
                 <CardKeyboard 
                     v-for="data in dataHistori"
                     :hasil="data"
                     class="my-[2vh]"
                     @deleteData="deleteData"
                 />
-            </div>
-        </NavbarHP>
+        </div>
+
+        <InputKeyboard 
+                v-if="manipulationDone && posisi == 'home'"
+                class="my-[4vh]" 
+                @handleInput="handleInput" @setIsActive="setIsActive" 
+        />
 
         <CardKeyboard v-if="hasil && !isActive && posisi == 'home'" :hasil="hasil.value" />
         

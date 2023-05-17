@@ -7,10 +7,11 @@
     import NavbarHP from "../../components/NavbarHP/NavbarHP.vue";
     import NavigasiVue from "../../components/Navigasi/NavigasiVue.vue"
     import CardTodolist from "./CardTodolist.vue";
-    import { ref, nextTick } from "vue"; 
     import {useElementBounding} from "@vueuse/core";
 
     export default {
+  watch: {
+  },
         name: "TodoList",
         components: {
             AccountVue,
@@ -19,18 +20,23 @@
             NavigasiVue,
             CardTodolist
         },
-        data() {
+        data() {    
             return {
                 isFixed: false,
             }
         },
+        async created() {
+            this.getDataTodolist()
+        },
         setup() {
             const storeTodolist = useStoreTodolist()
+            const {getDataTodolist} = storeTodolist
             const {setStatus} = storeTodolist
             const {navbarHP, posisi} = storeToRefs(storeTodolist)
 
             const classNavbar = "fixed inset-x-0 top-[10vh] z-20 bg-light dark:bg-dark pb-4 "
-            return {setStatus, navbarHP, classNavbar, posisi}
+
+            return {setStatus, navbarHP, classNavbar, posisi, getDataTodolist}
         },
         methods: {
             handleScroll(e) {

@@ -44,7 +44,10 @@ export const useStoreTodolist = defineStore('storeTodolist', {
             })
         },
         async getDataTodolist() {
+            const storeAccount = useStoreAccount()
             const {getIsLogin, instance, formData} = storeToRefs(useStoreAccount())
+            
+            await storeAccount.cekLogin()
             
             if(!getIsLogin.value) {
                 this.data = []
@@ -129,6 +132,7 @@ export const useStoreTodolist = defineStore('storeTodolist', {
                 this.data = newDataTodolist
             } catch (error) {
                 console.log({error})
+                
                 return false
             }
         },
